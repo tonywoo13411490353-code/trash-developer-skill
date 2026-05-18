@@ -16,9 +16,16 @@ description: DD Pipeline 主命令 - 初始化项目、检查状态、进入需�
 - **不存在** → 执行初始化：
   1. 创建 `docs/rdd/` 目录
   2. 创建 `docs/agents/` 目录
-  3. 创建 `docs/task.json`（写入完整初始状态，包含 6 层 Pipeline 所有阶段，均为 not_started）
+  3. 创建 `docs/task.json`（写入完整初始状态，`created_at` 设为当前日期 YYYY-MM-DD 格式，包含 6 层 Pipeline 所有阶段，均为 not_started）
   4. 创建 `docs/rdd/talk.md`（初始内容：`# 需求分析对话记录\n\n> 此文件记录需求分析的完整对话历史`）
   5. 告知用户: "项目已初始化，开始需求分析"
+
+- **存在** → 读取 `docs/task.json`，进入状态检查
+
+### 1.1 边界检查
+
+- 如果 `docs/agents/` 目录为空 → 告知用户: "请先在 docs/agents/ 中放置 Agent 定义文件（.md 格式），或从示例模板开始。"
+- 如果某个 Agent .md 文件缺少 frontmatter → 跳过该文件，告知用户: "Agent [文件名] 格式不正确，已跳过。"
 
 - **存在** → 读取 `docs/task.json`，进入状态检查
 
@@ -192,3 +199,5 @@ Agent(
 - `systems-architect` - 技术可行性
 - `competitive-teardown` - 竞品分析
 - `product-strategist` - 市场定位
+
+> **注意**：如果某个 Skill 不可用，跳过该视角继续对话，不要报错中断。用你的通用能力补位。
